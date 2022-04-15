@@ -1,15 +1,12 @@
 import React from 'react';
 
-const Filter = ({search, querySearch, clear, filterCategory}) => {
-    const Appointment = (category) => {
-        debugger
-
+const Filter = ({search, querySearch, clear, filterCategory:{type,destination,category,color,milk}}) => {
+    const Appointment = ({category}) => {
         return (
             <>
-                {category.length > 0 ? category.map(categoryItem => {
-                    console.log(categoryItem)
+                {category.length > 0 ? category.sort().map((categoryItem,key) => {
                     return (
-                        <label className="label-checkbox">
+                        <label key={key} className="label-checkbox">
                             <span>{categoryItem}</span>
                             <input type="checkbox"/>
                             <span></span>
@@ -34,157 +31,63 @@ const Filter = ({search, querySearch, clear, filterCategory}) => {
                         </button>
                     </div>
                     <div className="filter-body">
-
                         <div className="spoiler-block">
                             <button className="btn btn-primary" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse1" aria-expanded="false">
-                                Назначение
+                                Тип
                             </button>
                             <div className="collapse" id="collapse1">
                                 <div className="spoiler-input-block">
-                                    <Appointment category={filterCategory}/>
+                                    <Appointment category={type}/>
                                 </div>
                             </div>
                         </div>
-
                         <div className="spoiler-block">
                             <button className="btn btn-primary" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse2" aria-expanded="false">
-                                Вкус
+                                Назначение
                             </button>
                             <div className="collapse" id="collapse2">
                                 <div className="spoiler-input-block">
-                                    <label className="label-checkbox">
-                                        <span>Фруктовый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Травянистый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Ягодный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Цветочный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Пряный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Десертный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Кофейный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
+                                    <Appointment category={destination}/>
                                 </div>
                             </div>
                         </div>
-
                         <div className="spoiler-block">
                             <button className="btn btn-primary" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse3" aria-expanded="false">
-                                Цвет
+                                Категория
                             </button>
                             <div className="collapse" id="collapse3">
                                 <div className="spoiler-input-block">
-                                    <label className="label-checkbox">
-                                        <span>Фруктовый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Травянистый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Ягодный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Цветочный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Пряный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Десертный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Кофейный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
+                                    <Appointment category={category}/>
+
                                 </div>
                             </div>
                         </div>
                         <div className="spoiler-block">
                             <button className="btn btn-primary" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse4" aria-expanded="false">
-                                Исполь. с горячим молоком
+                                Цвет
                             </button>
                             <div className="collapse" id="collapse4">
                                 <div className="spoiler-input-block">
-                                    <label className="label-checkbox">
-                                        <span>Фруктовый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Травянистый</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Ягодный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Цветочный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Пряный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Десертный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
-                                    <label className="label-checkbox">
-                                        <span>Кофейный</span>
-                                        <input type="checkbox"/>
-                                        <span></span>
-                                    </label>
+                                    <Appointment category={color}/>
+
                                 </div>
                             </div>
                         </div>
-
-
+                        <div className="spoiler-block">
+                            <button className="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse5" aria-expanded="false">
+                                Использ. с горячим молоком
+                            </button>
+                            <div className="collapse" id="collapse5">
+                                <div className="spoiler-input-block">
+                                    <Appointment category={milk}/>
+                                </div>
+                            </div>
+                        </div>
                         <button className="green-button">Применить</button>
                         <button type='button' onClick={clear} className="reset">Сбросить фильтр</button>
                     </div>

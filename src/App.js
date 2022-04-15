@@ -41,13 +41,39 @@ function App() {
         console.log(itemsFiltred)
     }
     const setCategory = (result) => {
-        let category;
-        console.log(result);
+        let category = {
+            'type': [],
+            'category': [],
+            'destination': [],
+            'color': [],
+            'milk': [],
+        };
+        const fields = ['type', 'category', 'destination', 'color', 'milk']
+        fields.forEach((value, index) => {
+            switch (value) {
+                case 'destination':
+                    category[value] = result.map((item) => {
+                        return item.PROPS.DESTINATION.VALUE
+                    })
+                    category[value] = [...new Set(category[value].flat().filter((el)=>el))];
+                    break;
+                case 'milk':
+                    category[value] = result.map((item) => {
+                        return item.PROPS.USE_MILK.VALUE
+                    })
+                    category[value] = [...new Set(category[value].flat().filter((el)=>el))];
+                    break;
+                default:
+                    category[value] = result.map((item) => {
+                        return item[value.toUpperCase()]
+                    })
+                    category[value] = [...new Set(category[value].flat().filter((el)=>el))]
+                    break;
+            }
 
-        category =  result.map((item) => {
-            return item.PROPS.DESTINATION.VALUE
         })
-       return [...new Set(category.flat().filter((el)=>el))]
+        console.log(category)
+        return category
     }
     useEffect(() => {
         loadData();
