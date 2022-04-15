@@ -8,25 +8,64 @@ import Elements from "./Components/hoc/Elements/Elements";
 import EmptyItem from "./Components/EmptyItem/EmptyItem";
 
 function App() {
-    const [apiResult, setResult] = useState([]);
+    const [querySearch, setQuerySearch] = useState('');
+    const [filterSearch, setFilterSearch] = useState([]);
+    const [itemsPinch, setResult] = useState([]);
+    const [filterCategory, setFilterCategory] = useState([]);
+
     const loadData = () => {
-        fetch(`${HEROKU_URL}${BASE_URL}`)
+        fetch(`${BASE_URL}`)
             .then(res => res.json())
             .then(result => {
                 setResult(result);
+                setFilterCategory(setCategory(result));
             })
             .catch(error => error)
     }
-    useEffect(()=>{
-        loadData();
-    },[])
+    const clearFilter = () => {
+        console.log('reset')
 
+        setQuerySearch('');
+        setFilterSearch(itemsPinch)
+    }
+    const search = (e) => {
+        e.preventDefault();
+        setQuerySearch(e.target.value);
+        let itemsFiltred;
+        itemsFiltred = itemsPinch.filter(itemPinch => {
+            if (itemPinch.NAME !== null) {
+                return itemPinch.NAME.toLowerCase().indexOf(querySearch) !== -1;
+            }
+        })
+        setFilterSearch(itemsFiltred)
+        console.log(itemsFiltred)
+    }
+    const setCategory = (result) => {
+        let category;
+        console.log(result);
+
+        category =  result.map((item) => {
+            return item.PROPS.DESTINATION.VALUE
+        })
+       return [...new Set(category.flat().filter((el)=>el))]
+    }
+    useEffect(() => {
+        loadData();
+        // setCategory()
+    }, [])
+
+    const items = filterSearch.length ? filterSearch : itemsPinch
     return (
         <div className="recipes-wrapper">
             <div className="row">
-                <Filter />
-                { apiResult.length>0?<Elements sirops={apiResult}/>:<EmptyItem />}
+                <Filter
+                    filterCategory={filterCategory}
+                    clear={clearFilter}
+                    search={search}
+                    setQuerySearch={setQuerySearch}
+                    querySearch={querySearch}/>
 
+                {itemsPinch.length > 0 ? <Elements sirops={items}/> : <EmptyItem/>}
             </div>
         </div>
 
