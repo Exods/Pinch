@@ -2,9 +2,10 @@ import React from 'react';
 
 const Filter = ({search, querySearch, clear, filterCategory:{type,destination,category,color,milk}}) => {
     const Appointment = ({category}) => {
+
         return (
             <>
-                {category.length > 0 ? category.sort().map((categoryItem,key) => {
+                {category.sort().map((categoryItem,key) => {
                     return (
                         <label key={key} className="label-checkbox">
                             <span>{categoryItem}</span>
@@ -12,10 +13,9 @@ const Filter = ({search, querySearch, clear, filterCategory:{type,destination,ca
                             <span></span>
                         </label>
                     )
-                }) : ''}
+                })}
             </>
         )
-
     }
     return (
         <div className="col-lg-3">

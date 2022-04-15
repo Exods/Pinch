@@ -2,7 +2,7 @@ import {HEROKU_URL, BASE_URL} from './constans'
 import './App.css';
 import './bootstrap.min.css';
 
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Filter from "./Components/hoc/Filter/Filter";
 import Elements from "./Components/hoc/Elements/Elements";
 import EmptyItem from "./Components/EmptyItem/EmptyItem";
@@ -55,24 +55,24 @@ function App() {
                     category[value] = result.map((item) => {
                         return item.PROPS.DESTINATION.VALUE
                     })
-                    category[value] = [...new Set(category[value].flat().filter((el)=>el))];
+                    category[value] = [...new Set(category[value].flat().filter((el) => el))];
                     break;
                 case 'milk':
                     category[value] = result.map((item) => {
                         return item.PROPS.USE_MILK.VALUE
                     })
-                    category[value] = [...new Set(category[value].flat().filter((el)=>el))];
+                    category[value] = [...new Set(category[value].flat().filter((el) => el))];
                     break;
                 default:
                     category[value] = result.map((item) => {
                         return item[value.toUpperCase()]
                     })
-                    category[value] = [...new Set(category[value].flat().filter((el)=>el))]
+                    category[value] = [...new Set(category[value].flat().filter((el) => el))]
                     break;
             }
 
         })
-        console.log(category)
+        // console.log(category)
         return category
     }
     useEffect(() => {
@@ -84,14 +84,22 @@ function App() {
     return (
         <div className="recipes-wrapper">
             <div className="row">
-                <Filter
-                    filterCategory={filterCategory}
-                    clear={clearFilter}
-                    search={search}
-                    setQuerySearch={setQuerySearch}
-                    querySearch={querySearch}/>
 
-                {itemsPinch.length > 0 ? <Elements sirops={items}/> : <EmptyItem/>}
+
+                {itemsPinch.length > 0 ?
+                    <Fragment>
+                        <Filter
+                            filterCategory={filterCategory}
+                            clear={clearFilter}
+                            search={search}
+                            setQuerySearch={setQuerySearch}
+                            querySearch={querySearch}/>
+                        <Elements sirops={items}/>
+
+                    </Fragment>
+                        : <EmptyItem/>
+
+                }
             </div>
         </div>
 
