@@ -29,7 +29,8 @@ function App() {
         console.log('reset')
 
         setQuerySearch('');
-        setFilterSearch(itemsPinch)
+        setFilterSearch(itemsPinch);
+        setFilterCheckbox({});
     }
     const search = (e) => {
         e.preventDefault();
@@ -43,13 +44,14 @@ function App() {
         setFilterSearch(itemsFiltred)
         console.log(itemsFiltred)
     }
-    const handleChekedInput = ({target:{attributes:{datacategory,name,datakey}}}) => {
+    const handleChekedInput = ({target:{attributes:{datacategory,name}}}) => {
         let filterInput = { ...filterCheckbox }
-        filterInput[datacategory.value] = filterInput.hasOwnProperty(name.value)  ? false: name.value
+
+        filterInput[datacategory.value] = Object.values(filterInput[datacategory.value]).filter((el)=>{return el == name.value}) ? name.value: ''
         setFilterCheckbox(filterInput)
-        console.log(filterInput)
+        console.log(name.value)
         console.log(filterInput.hasOwnProperty(name.value))
-        setFilterCategory(filterCategory)
+        // setFilterCategory(filterCategory)
     }
 
     const setCategory = (result) => {
