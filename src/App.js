@@ -12,14 +12,17 @@ function App() {
     const [filterSearch, setFilterSearch] = useState([]);
     const [itemsPinch, setResult] = useState([]);
     const [filterCategory, setFilterCategory] = useState([]);
+    const [filterCheckbox, setFilterCheckbox] = useState([]);
+
 
     const loadData = () => {
         fetch(`${BASE_URL}`)
             .then(res => res.json())
             .then(result => {
                 setResult(result);
-                setFilterCategory(setCategory(result));
+                    setFilterCategory(setCategory(result));
             })
+
             .catch(error => error)
     }
     const clearFilter = () => {
@@ -40,6 +43,15 @@ function App() {
         setFilterSearch(itemsFiltred)
         console.log(itemsFiltred)
     }
+    const handleChekedInput = ({target:{attributes:{datacategory,name,datakey}}}) => {
+        let filterInput = { ...filterCheckbox }
+        filterInput[datacategory.value] = filterInput.hasOwnProperty(name.value)  ? false: name.value
+        setFilterCheckbox(filterInput)
+        console.log(filterInput)
+        console.log(filterInput.hasOwnProperty(name.value))
+        setFilterCategory(filterCategory)
+    }
+
     const setCategory = (result) => {
         let category = {
             'type': [],
@@ -72,12 +84,13 @@ function App() {
             }
 
         })
+        // category['setFilter'] = false;
         // console.log(category)
         return category
     }
+
     useEffect(() => {
         loadData();
-        // setCategory()
     }, [])
 
     const items = filterSearch.length ? filterSearch : itemsPinch
@@ -93,7 +106,10 @@ function App() {
                             clear={clearFilter}
                             search={search}
                             setQuerySearch={setQuerySearch}
-                            querySearch={querySearch}/>
+                            querySearch={querySearch}
+                            handleChekedInput={handleChekedInput}
+                            filterCheckbox={filterCheckbox}
+                        />
                         <Elements sirops={items}/>
 
                     </Fragment>
