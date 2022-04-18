@@ -1,4 +1,4 @@
-import {HEROKU_URL, BASE_URL} from './constans'
+import { BASE_URL} from './constans'
 import './App.css';
 import './bootstrap.min.css';
 
@@ -8,11 +8,11 @@ import Elements from "./Components/hoc/Elements/Elements";
 import EmptyItem from "./Components/EmptyItem/EmptyItem";
 
 function App() {
+    const [filterCategory, setFilterCategory] = useState([]);
+    const [filterCheckbox, setFilterCheckbox] = useState([]);
     const [querySearch, setQuerySearch] = useState('');
     const [filterSearch, setFilterSearch] = useState([]);
     const [itemsPinch, setResult] = useState([]);
-    const [filterCategory, setFilterCategory] = useState([]);
-    const [filterCheckbox, setFilterCheckbox] = useState([]);
 
 
     const loadData = () => {
@@ -36,22 +36,50 @@ function App() {
         e.preventDefault();
         setQuerySearch(e.target.value);
         let itemsFiltred;
-        itemsFiltred = itemsPinch.filter(itemPinch => {
+        let Items =filterSearch.length?filterSearch:itemsPinch
+        itemsFiltred = Items.filter(itemPinch => {
             if (itemPinch.NAME !== null) {
                 return itemPinch.NAME.toLowerCase().indexOf(querySearch) !== -1;
             }
         })
         setFilterSearch(itemsFiltred)
-        console.log(itemsFiltred)
+        // console.log(itemsFiltred)
+    }
+    const categorySearch = (obj) => {
+        let itemsFiltred;
+        for (let itemsFiltredKey in obj) {
+            obj[itemsFiltredKey].forEach((value,index)=>{
+                itemsFiltred = itemsPinch.filter(itemPinch => {
+                    itemsFiltredKey = itemsFiltredKey.toUpperCase()
+                    if (itemPinch.itemsFiltredKey !== null) {
+                        return itemPinch[itemsFiltredKey].indexOf(value) !== -1;
+                    }
+                })
+                // console.log(itemsFiltred)
+                setFilterSearch(itemsFiltred)
+            })
+        }
     }
     const handleChekedInput = ({target:{attributes:{datacategory,name}}}) => {
-        let filterInput = { ...filterCheckbox }
+        let filterInput = filterCheckbox
+        if (!filterInput.hasOwnProperty(datacategory.value)){
+            filterInput[datacategory.value] = [name.value]
+        }else {
 
-        filterInput[datacategory.value] = Object.values(filterInput[datacategory.value]).filter((el)=>{return el == name.value}) ? name.value: ''
-        setFilterCheckbox(filterInput)
-        console.log(name.value)
-        console.log(filterInput.hasOwnProperty(name.value))
-        // setFilterCategory(filterCategory)
+            if(!Object.values(filterInput[datacategory.value]).includes(name.value)){
+                filterInput[datacategory.value] = [...filterInput[datacategory.value],name.value]
+
+            }else{
+                filterInput[datacategory.value] =  filterInput[datacategory.value].filter((n) => {
+                    return n !== name.value
+                })
+            }
+        }
+       setFilterCheckbox(filterInput);
+        console.log(filterCheckbox)
+       categorySearch(filterCheckbox);
+
+
     }
 
     const setCategory = (result) => {

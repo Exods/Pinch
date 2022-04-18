@@ -5,13 +5,18 @@ const FilterItems = ({filterCategory, handleChekedInput, filterCheckbox}) => {
 
     const namesFields = ['Тип', 'Категория', 'Назначение', 'Цвет', 'Использ. с горячим молоком'];
     const Category = ({filterCategory, typeCategory, filterCheckbox, handleChekedInput}) => {
+        const filterArr = Object.values(filterCheckbox)
         return (
             <>
                 {
                     filterCategory.map((categoryItem, key) => {
-                        let checked = filterCheckbox[typeCategory] == categoryItem && filterCheckbox[typeCategory] ? 'checked' : '';
+
+                        let checked =''
+                        if(filterCheckbox[typeCategory]!==undefined){
+                            checked = filterCheckbox[typeCategory].indexOf(categoryItem) != -1? 'checked' : '';
+                        }
                     return (
-                        <label key={key}  className="label-checkbox">
+                        <label key={categoryItem}  className="label-checkbox">
                             <span>{categoryItem}</span>
                             <input checked={checked}
                                    datacategory={typeCategory}
