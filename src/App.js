@@ -9,12 +9,15 @@ import EmptyItem from "./Components/EmptyItem/EmptyItem";
 
 function App() {
     const [filterCategory, setFilterCategory] = useState([]);
-    const [filterCheckbox, setFilterCheckbox] = useState([]);
+    const [filterCheckbox, setFilterCheckbox] = useState({});
     const [querySearch, setQuerySearch] = useState('');
     const [filterSearch, setFilterSearch] = useState([]);
     const [itemsPinch, setResult] = useState([]);
-
-
+    window.setFilterSearch =setFilterSearch
+    window.filterSearch =filterSearch
+    const unique = (arr)=> {
+        return Array.from(new Set(arr));
+    }
     const loadData = () => {
         fetch(`${BASE_URL}`)
             .then(res => res.json())
@@ -29,15 +32,15 @@ function App() {
         console.log('reset')
 
         setQuerySearch('');
-        setFilterSearch(itemsPinch);
+        setFilterSearch([]);
         setFilterCheckbox({});
     }
     const search = (e) => {
+        setQuerySearch(e.target.value);
         let itemsFiltred;
         let Items = itemsPinch
-        categorySearch(filterCheckbox)
+        // categorySearch(filterCheckbox)
         e.preventDefault();
-        setQuerySearch(e.target.value);
         setFilterSearch(itemsFiltred)
         itemsFiltred = Items.filter(itemPinch => {
             if (itemPinch.NAME !== null) {
@@ -48,36 +51,51 @@ function App() {
         // console.log(itemsFiltred)
     }
     const categorySearch = (obj) => {
-        // console.log(filterSearch);
-        let itemsFiltred = [];
-        let custom = [];
-        for (let itemsFiltredKey in obj) {
-            console.log(custom)
+        let itemsFiltred = itemsPinch;//Где то тут закралась ошибка на
+        // входе...падла))))
+         console.log(itemsFiltred)
 
+        let items = filterSearch.length && filterCheckbox.length ? filterSearch  : [];
+        for (let itemsFiltredKey in obj) {
             obj[itemsFiltredKey].forEach((value, index) => {
 
-                itemsFiltred = itemsPinch.filter(itemPinch => {
+                // console.log(itemsFiltred.length)
+
+                items = [...itemsFiltred.filter(itemPinch => {
                     itemsFiltredKey = itemsFiltredKey.toUpperCase()
                     if (itemPinch.itemsFiltredKey !== null) {
-                        return itemPinch[itemsFiltredKey].indexOf(value) !== -1;
+                        if (itemsFiltredKey == 'DESTINATION') {
+                            if (itemPinch.PROPS[itemsFiltredKey].VALUE) {
+                                return itemPinch.PROPS[itemsFiltredKey].VALUE.filter((item) => {
+                                    return item.indexOf(value) !== -1;
+                                })
+                            }
+                        } else {
+                            return itemPinch[itemsFiltredKey].indexOf(value) !== -1;
+                        }
+
                     }
 
-                })
-                custom[index] = itemsFiltred;
+                }), ...items]
 
             })
-            // itemsFiltred = filterSearch.concat(itemsFiltred)
-            // console.log(itemsFiltred.length)
-            console.log(custom)
 
         }
-        setFilterSearch(itemsFiltred)
+        console.log(items.length)
+
+        // unique(items);//Заглушка...
+        console.log(items.length)
+        setFilterSearch(items)
+
     }
     const handleChekedInput = ({target: {attributes: {datacategory, name}}}) => {
+
         let filterInput = filterCheckbox
+        // console.log(filterInput);
         if (!filterInput.hasOwnProperty(datacategory.value)) {
             filterInput[datacategory.value] = [name.value]
         } else {
+
             if (!Object.values(filterInput[datacategory.value]).includes(name.value)) {
                 filterInput[datacategory.value] = [...filterInput[datacategory.value], name.value]
             } else {
@@ -85,13 +103,13 @@ function App() {
                     return n !== name.value
                 })
             }
-            if(filterInput.hasOwnProperty(datacategory.value) && !filterInput[datacategory.value].length){
+            if (filterInput.hasOwnProperty(datacategory.value) && !filterInput[datacategory.value].length) {
                 delete filterInput[datacategory.value]
+                // console.log(filterInput);
+
             }
         }
-
         setFilterCheckbox(filterInput);
-        // console.log(filterCheckbox)
         categorySearch(filterCheckbox);
 
 
@@ -103,9 +121,9 @@ function App() {
             'category': [],
             'destination': [],
             'color': [],
-            'milk': [],
+            'use_milk': [],
         };
-        const fields = ['type', 'category', 'destination', 'color', 'milk']
+        const fields = ['type', 'category', 'destination', 'color', 'use_milk']
         fields.forEach((value, index) => {
             switch (value) {
                 case 'destination':
@@ -114,7 +132,7 @@ function App() {
                     })
                     category[value] = [...new Set(category[value].flat().filter((el) => el))];
                     break;
-                case 'milk':
+                case 'use_milk':
                     category[value] = result.map((item) => {
                         return item.PROPS.USE_MILK.VALUE
                     })
@@ -142,8 +160,6 @@ function App() {
     return (
         <div className="recipes-wrapper">
             <div className="row">
-
-
                 {itemsPinch.length > 0 ?
                     <Fragment>
                         <Filter

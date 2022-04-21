@@ -16,7 +16,7 @@ const FilterItems = ({filterCategory, handleChekedInput, filterCheckbox}) => {
                             checked = filterCheckbox[typeCategory].indexOf(categoryItem) != -1? 'checked' : '';
                         }
                     return (
-                        <label key={categoryItem}  className="label-checkbox">
+                        <label key={`${categoryItem}-key`}  className="label-checkbox">
                             <span>{categoryItem}</span>
                             <input checked={checked}
                                    datacategory={typeCategory}

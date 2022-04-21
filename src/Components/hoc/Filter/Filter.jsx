@@ -4,7 +4,7 @@ import FilterItems from "../FilterItems/FilterItems";
 const Filter = ({search, querySearch, clear,filterCategory,handleChekedInput,filterCheckbox}) => {
     return (
         <div className="col-lg-3">
-            <form>
+            <form onSubmit={search}>
                 <div className="filter">
                     <div className="filter-mobil">
                         <div className="search">
