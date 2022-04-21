@@ -11,7 +11,7 @@ const FilterItems = ({filterCategory, handleChekedInput, filterCheckbox}) => {
                 {
                     filterCategory.map((categoryItem, key) => {
 
-                        let checked =''
+                        let checked ='';
                         if(filterCheckbox[typeCategory]!==undefined){
                             checked = filterCheckbox[typeCategory].indexOf(categoryItem) != -1? 'checked' : '';
                         }

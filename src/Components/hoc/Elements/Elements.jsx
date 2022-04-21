@@ -6,8 +6,22 @@ const Elements = ({sirops}) => {
         <div className="col-lg-9">
             <div className="row">
                 {
-          sirops.map(({VOLUME,VENDOR_CODE,MATERIAL,NAME,ID,TASTE,CATEGORY,LINK,COLOR,PREVIEW_SRC,USE_MILK,PROPS:{DESTINATION}})=>{
-                        return   <ElemetntItem
+                    sirops.map(({
+                                    VOLUME,
+                                    VENDOR_CODE,
+                                    MATERIAL,
+                                    NAME,
+                                    ID,
+                                    TASTE,
+                                    CATEGORY,
+                                    LINK,
+                                    COLOR,
+                                    PREVIEW_SRC,
+                                    USE_MILK,
+                                    PROPS: {DESTINATION}
+                                }) => {
+                        // console.log(DESTINATION +'----'+NAME);
+                        return <ElemetntItem
                             key={ID}
                             material={MATERIAL}
                             name={NAME}

@@ -1,4 +1,4 @@
-import { BASE_URL} from './constans'
+import {BASE_URL} from './constans'
 import './App.css';
 import './bootstrap.min.css';
 
@@ -20,7 +20,7 @@ function App() {
             .then(res => res.json())
             .then(result => {
                 setResult(result);
-                    setFilterCategory(setCategory(result));
+                setFilterCategory(setCategory(result));
             })
 
             .catch(error => error)
@@ -33,10 +33,12 @@ function App() {
         setFilterCheckbox({});
     }
     const search = (e) => {
+        let itemsFiltred;
+        let Items = itemsPinch
+        categorySearch(filterCheckbox)
         e.preventDefault();
         setQuerySearch(e.target.value);
-        let itemsFiltred;
-        let Items =filterSearch.length?filterSearch:itemsPinch
+        setFilterSearch(itemsFiltred)
         itemsFiltred = Items.filter(itemPinch => {
             if (itemPinch.NAME !== null) {
                 return itemPinch.NAME.toLowerCase().indexOf(querySearch) !== -1;
@@ -46,38 +48,51 @@ function App() {
         // console.log(itemsFiltred)
     }
     const categorySearch = (obj) => {
-        let itemsFiltred;
+        // console.log(filterSearch);
+        let itemsFiltred = [];
+        let custom = [];
         for (let itemsFiltredKey in obj) {
-            obj[itemsFiltredKey].forEach((value,index)=>{
+            console.log(custom)
+
+            obj[itemsFiltredKey].forEach((value, index) => {
+
                 itemsFiltred = itemsPinch.filter(itemPinch => {
                     itemsFiltredKey = itemsFiltredKey.toUpperCase()
                     if (itemPinch.itemsFiltredKey !== null) {
                         return itemPinch[itemsFiltredKey].indexOf(value) !== -1;
                     }
+
                 })
-                // console.log(itemsFiltred)
-                setFilterSearch(itemsFiltred)
+                custom[index] = itemsFiltred;
+
             })
+            // itemsFiltred = filterSearch.concat(itemsFiltred)
+            // console.log(itemsFiltred.length)
+            console.log(custom)
+
         }
+        setFilterSearch(itemsFiltred)
     }
-    const handleChekedInput = ({target:{attributes:{datacategory,name}}}) => {
+    const handleChekedInput = ({target: {attributes: {datacategory, name}}}) => {
         let filterInput = filterCheckbox
-        if (!filterInput.hasOwnProperty(datacategory.value)){
+        if (!filterInput.hasOwnProperty(datacategory.value)) {
             filterInput[datacategory.value] = [name.value]
-        }else {
-
-            if(!Object.values(filterInput[datacategory.value]).includes(name.value)){
-                filterInput[datacategory.value] = [...filterInput[datacategory.value],name.value]
-
-            }else{
-                filterInput[datacategory.value] =  filterInput[datacategory.value].filter((n) => {
+        } else {
+            if (!Object.values(filterInput[datacategory.value]).includes(name.value)) {
+                filterInput[datacategory.value] = [...filterInput[datacategory.value], name.value]
+            } else {
+                filterInput[datacategory.value] = filterInput[datacategory.value].filter((n) => {
                     return n !== name.value
                 })
             }
+            if(filterInput.hasOwnProperty(datacategory.value) && !filterInput[datacategory.value].length){
+                delete filterInput[datacategory.value]
+            }
         }
-       setFilterCheckbox(filterInput);
-        console.log(filterCheckbox)
-       categorySearch(filterCheckbox);
+
+        setFilterCheckbox(filterInput);
+        // console.log(filterCheckbox)
+        categorySearch(filterCheckbox);
 
 
     }
@@ -122,8 +137,8 @@ function App() {
     useEffect(() => {
         loadData();
     }, [])
-
-    const items = filterSearch.length ? filterSearch : itemsPinch
+    // console.log(filterSearch);
+    const items = filterSearch.length || querySearch ? filterSearch : itemsPinch
     return (
         <div className="recipes-wrapper">
             <div className="row">
@@ -143,7 +158,7 @@ function App() {
                         <Elements sirops={items}/>
 
                     </Fragment>
-                        : <EmptyItem/>
+                    : <EmptyItem/>
 
                 }
             </div>
