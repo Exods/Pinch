@@ -51,16 +51,16 @@ function App() {
         // console.log(itemsFiltred)
     }
     const categorySearch = (obj) => {
-        let itemsFiltred = itemsPinch;//Где то тут закралась ошибка на
-        // входе...падла))))
-         console.log(itemsFiltred)
+        let itemsFiltred = itemsPinch;//Где то тут закралась ошибка на  входе...падла))))
+        let items =  [];
+        let iterationItems =  [];
 
-        let items = filterSearch.length && filterCheckbox.length ? filterSearch  : [];
+        // console.log(filterSearch.length && Object.keys(filterCheckbox).length>0)
+
         for (let itemsFiltredKey in obj) {
+            itemsFiltred = items.length ? iterationItems: itemsPinch;
+            items = iterationItems.length? []: items
             obj[itemsFiltredKey].forEach((value, index) => {
-
-                // console.log(itemsFiltred.length)
-
                 items = [...itemsFiltred.filter(itemPinch => {
                     itemsFiltredKey = itemsFiltredKey.toUpperCase()
                     if (itemPinch.itemsFiltredKey !== null) {
@@ -73,19 +73,18 @@ function App() {
                         } else {
                             return itemPinch[itemsFiltredKey].indexOf(value) !== -1;
                         }
-
                     }
-
                 }), ...items]
 
             })
-
+            iterationItems = items;
         }
-        console.log(items.length)
+        // console.log(items.length)
 
-        // unique(items);//Заглушка...
-        console.log(items.length)
+        // items = items);//Заглушка...
+        // debugger
         setFilterSearch(items)
+        console.log(filterSearch.length+'---новый фильтр')
 
     }
     const handleChekedInput = ({target: {attributes: {datacategory, name}}}) => {
@@ -156,7 +155,9 @@ function App() {
         loadData();
     }, [])
     // console.log(filterSearch);
-    const items = filterSearch.length || querySearch ? filterSearch : itemsPinch
+    const items = filterSearch.length || querySearch  ? filterSearch : itemsPinch
+    console.log(items.length)
+
     return (
         <div className="recipes-wrapper">
             <div className="row">
