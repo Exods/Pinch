@@ -1355,6 +1355,9 @@ body.active {
     width: 280px;
     margin-left: auto;
   }
+  .show {
+    display: block;
+  }
 
   .filter-body.active {
     display: block;

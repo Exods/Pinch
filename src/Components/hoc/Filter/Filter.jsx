@@ -1,7 +1,7 @@
 import React from 'react';
 import FilterItems from "../FilterItems/FilterItems";
 
-const Filter = ({search, querySearch, clear,filterCategory,handleChekedInput,filterCheckbox}) => {
+const Filter = ({search, querySearch, clear,filterCategory,mobileFilter,handleFilterShow,handleChekedInput,filterCheckbox}) => {
     return (
         <div className="col-lg-3">
             <form onSubmit={search}>
@@ -11,11 +11,11 @@ const Filter = ({search, querySearch, clear,filterCategory,handleChekedInput,fil
                             <input type="search" onChange={search} placeholder="Поиск" value={querySearch}/>
                             <button><img src="./images/search.svg" alt=""/></button>
                         </div>
-                        <button className="d-block d-lg-none toggle-filter">
+                        <button className="d-block d-lg-none toggle-filter" onClick={handleFilterShow}>
                             <img src="./images/filter.svg" alt=""/>
                         </button>
                     </div>
-                    <div className="filter-body">
+                    <div  className={`filter-body ${mobileFilter?"show":""}`} >
                         <FilterItems  handleChekedInput={handleChekedInput} filterCategory={filterCategory} filterCheckbox={filterCheckbox}/>
                         <button className="green-button">Применить</button>
                         <button type='button' onClick={clear} className="reset">Сбросить фильтр</button>

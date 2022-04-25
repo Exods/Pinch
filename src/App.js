@@ -13,20 +13,29 @@ function App() {
     const [querySearch, setQuerySearch] = useState('');
     const [filterSearch, setFilterSearch] = useState([]);
     const [itemsPinch, setResult] = useState([]);
+    const [mobileFilter, toggleMobileFilter] = useState(false);
+    const [pageCountItems, setPageCountItems] = useState(6);//число на странице
+    const pageItems = 3;
+    const countItems = filterSearch.length?filterSearch: itemsPinch.length
+    const lastPageCountItems = countItems%pageCountItems;
+    const nextPageCountItems = pageCountItems+pageItems;
     window.setFilterSearch =setFilterSearch
     window.filterSearch =filterSearch
-    const unique = (arr)=> {
-        return Array.from(new Set(arr));
-    }
-    const loadData = () => {
+
+    const loadData = async () => {
         fetch(`${BASE_URL}`)
             .then(res => res.json())
             .then(result => {
                 setResult(result);
                 setFilterCategory(setCategory(result));
+
             })
 
             .catch(error => error)
+
+    }
+    const handleFilterShow = ()=>{
+        toggleMobileFilter(!mobileFilter);
     }
     const clearFilter = () => {
         console.log('reset')
@@ -34,6 +43,7 @@ function App() {
         setQuerySearch('');
         setFilterSearch([]);
         setFilterCheckbox({});
+        setPageCountItems(6);
     }
     const search = (e) => {
         setQuerySearch(e.target.value);
@@ -113,6 +123,19 @@ function App() {
 
 
     }
+    const handleShowMore = (e) => {
+        e.preventDefault();
+        console.log(pageCountItems)
+        console.log(lastPageCountItems)
+        if (pageCountItems!==countItems){
+            if(nextPageCountItems<countItems){
+                setPageCountItems(nextPageCountItems)
+            }else {
+                setPageCountItems(pageCountItems+lastPageCountItems);
+            }
+        }
+
+    }
 
     const setCategory = (result) => {
         let category = {
@@ -153,17 +176,20 @@ function App() {
 
     useEffect(() => {
         loadData();
+
     }, [])
     // console.log(filterSearch);
     const items = filterSearch.length || querySearch  ? filterSearch : itemsPinch
-    console.log(items.length)
+    // console.log(items.length)
 
     return (
         <div className="recipes-wrapper">
             <div className="row">
-                {itemsPinch.length > 0 ?
+                {items.length || querySearch?
                     <Fragment>
                         <Filter
+                            mobileFilter={mobileFilter}
+                            handleFilterShow={handleFilterShow}
                             filterCategory={filterCategory}
                             clear={clearFilter}
                             search={search}
@@ -172,10 +198,14 @@ function App() {
                             handleChekedInput={handleChekedInput}
                             filterCheckbox={filterCheckbox}
                         />
-                        <Elements sirops={items}/>
+                        <Elements sirops={items}
+                                  pageCountItems={pageCountItems}
+                                  countItems={countItems}
+                                  handleShowMore={handleShowMore}
+                        />
 
                     </Fragment>
-                    : <EmptyItem/>
+                    : <EmptyItem />
 
                 }
             </div>

@@ -1,11 +1,25 @@
 import React from 'react';
 import ElemetntItem from "../../ElemetItem/ElemetntItem";
 
-const Elements = ({sirops}) => {
+const Elements = ({sirops, pageCountItems, handleShowMore, countItems}) => {
+    const Empty = () => {
+        return (
+            <div className="col-lg-9">
+                <div className="row" id="result_items"><p className="products_not_found">Данные, удовлетворящие фильтрации,
+                    отсутствуют!</p>
+                </div>
+                <div id="paginator"></div>
+            </div>)
+    }
+    const ShowMore = () => {
+        return <a href="!#" className="green-button green-button-tm" onClick={handleShowMore} value>Загрузить еще</a>
+    }
+    sirops = sirops.slice(0, pageCountItems)
     return (
+
         <div className="col-lg-9">
             <div className="row">
-                {
+                {sirops.length ?
                     sirops.map(({
                                     VOLUME,
                                     VENDOR_CODE,
@@ -36,11 +50,12 @@ const Elements = ({sirops}) => {
                             article={VENDOR_CODE}
 
                         />
-                    })
+                    }) :
+                    <Empty/>
                 }
 
             </div>
-            <a href="" className="green-button green-button-tm">Загрузить еще</a>
+            {countItems > pageCountItems && sirops.length? <ShowMore/> : ''}
         </div>
     )
 };
