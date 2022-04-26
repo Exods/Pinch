@@ -1,14 +1,14 @@
 import React from 'react';
 import FilterItems from "../FilterItems/FilterItems";
 
-const Filter = ({search, querySearch, clear,filterCategory,mobileFilter,handleFilterShow,handleChekedInput,filterCheckbox}) => {
+const Filter = ({handleValue, querySearch, clear,filterCategory,mobileFilter,handleSubmitForm,handleFilterShow,handleChekedInput,filterCheckbox}) => {
     return (
         <div className="col-lg-3">
-            <form onSubmit={search}>
+            <form onSubmit={handleSubmitForm}>
                 <div className="filter">
                     <div className="filter-mobil">
                         <div className="search">
-                            <input type="search" onChange={search} placeholder="Поиск" value={querySearch}/>
+                            <input type="search" onChange={handleValue} placeholder="Поиск" value={querySearch}/>
                             <button><img src="./images/search.svg" alt=""/></button>
                         </div>
                         <button className="d-block d-lg-none toggle-filter" onClick={handleFilterShow}>

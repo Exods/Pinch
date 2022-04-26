@@ -16,7 +16,7 @@ function App() {
     const [mobileFilter, toggleMobileFilter] = useState(false);
     const [pageCountItems, setPageCountItems] = useState(6);//число на странице
     const pageItems = 3;
-    const countItems = filterSearch.length?filterSearch: itemsPinch.length
+    const countItems = filterSearch.length?filterSearch.length: itemsPinch.length
     const lastPageCountItems = countItems%pageCountItems;
     const nextPageCountItems = pageCountItems+pageItems;
     window.setFilterSearch =setFilterSearch
@@ -45,12 +45,22 @@ function App() {
         setFilterCheckbox({});
         setPageCountItems(6);
     }
-    const search = (e) => {
-        setQuerySearch(e.target.value);
+    const handleSubmitForm = (e) => {
+        e.preventDefault()
+        setQuerySearch(querySearch);
+        search();
+
+
+    }
+    const handleValue = ({target:{value}})=>{
+        setQuerySearch(value);
+        search();
+    }
+    const search = () => {
         let itemsFiltred;
         let Items = itemsPinch
         // categorySearch(filterCheckbox)
-        e.preventDefault();
+        // e.preventDefault();
         setFilterSearch(itemsFiltred)
         itemsFiltred = Items.filter(itemPinch => {
             if (itemPinch.NAME !== null) {
@@ -188,11 +198,12 @@ function App() {
                 {items.length || querySearch?
                     <Fragment>
                         <Filter
+                            handleSubmitForm={handleSubmitForm}
                             mobileFilter={mobileFilter}
                             handleFilterShow={handleFilterShow}
                             filterCategory={filterCategory}
                             clear={clearFilter}
-                            search={search}
+                            handleValue={handleValue}
                             setQuerySearch={setQuerySearch}
                             querySearch={querySearch}
                             handleChekedInput={handleChekedInput}
